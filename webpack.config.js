@@ -5,8 +5,10 @@ const dist = process.env.BUILD_DIST === 'true'
 const docs = process.env.BUILD_DOCS === 'true'
 const test = process.env.BUILD_TEST === 'true'
 
+const dev = !(dist || docs || test)
+
 module.exports = {
-  devtool: dist || docs || test ? 'sourcemap' : 'eval',
+  devtool: dev ? 'eval' : 'sourcemap',
   entry: dist ? {
     'dist/editable': './src/core.js'
   } : {
@@ -19,9 +21,9 @@ module.exports = {
     path: './',
     filename: '[name].js'
   },
-  externals: dist && {
+  externals: dist ? {
     jquery: 'jQuery'
-  },
+  } : {},
   module: {
     loaders: [{
       test: /\.js$/,
@@ -47,13 +49,13 @@ module.exports = {
     ...(docs ? [new webpack.DefinePlugin({
       'process.env': {'NODE_ENV': '"production"'}
     })] : []),
-    ...(test ? [] : [
+    ...(dev ? [
       new webpack.optimize.CommonsChunkPlugin({
         filename: 'hmr.js',
         name: 'hmr'
       }),
       new OpenBrowserPlugin({url: 'http://localhost:9050/examples/index.html'})
-    ])
+    ] : [])
   ],
   devServer: {
     historyApiFallback: true,
