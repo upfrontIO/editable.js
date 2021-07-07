@@ -311,6 +311,16 @@ export default class Dispatcher {
     // fires on mousemove (thats probably a bit too much)
     // catches changes like 'select all' from context menu
     $document.on('selectionchange.editable', (event) => {
+      const cursor = this.selectionWatcher.getFreshSelection()
+
+      if (cursor.isSelection && cursor.isAtBeginning() && cursor.isAtEnd()) {
+        this.notify('selectToBoundary', cursor.host, event, 'both', cursor)
+      } else if (cursor.isSelection && cursor.isAtBeginning()) {
+        this.notify('selectToBoundary', cursor.host, event, 'start', cursor)
+      } else if (cursor.isSelection && cursor.isAtEnd()) {
+        this.notify('selectToBoundary', cursor.host, event, 'end', cursor)
+      }
+
       if (suppressSelectionChanges) {
         selectionDirty = true
       } else {
