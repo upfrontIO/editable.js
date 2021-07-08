@@ -65,7 +65,7 @@ export default class Cursor {
     return content.getTagsByName(this.host, this.range, tagName)
   }
 
-  // Get all tags that are completely withing the current selection.
+  // Get all tags that are completely within the current selection.
   getInnerTags (filterFunc) {
     return content.getInnerTags(this.range, filterFunc)
   }
