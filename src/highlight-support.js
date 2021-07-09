@@ -11,13 +11,13 @@ function isInHost (elem, host) {
 
 const highlightSupport = {
 
-  highlightText (editableHost, text, highlightId) {
+  highlightText (editableHost, text, highlightId, type) {
     if (this.hasHighlight(editableHost, highlightId)) return
 
     const blockText = highlightText.extractText(editableHost)
 
-    const marker = '<span class="highlight-comment"></span>'
-    const markerNode = highlightSupport.createMarkerNode(marker, 'highlight', this.win)
+    const marker = `<span class="highlight-${type}"></span>`
+    const markerNode = highlightSupport.createMarkerNode(marker, type, this.win)
 
     const textSearch = new TextHighlighting(markerNode, 'text')
     const matches = textSearch.findMatches(blockText, [text])
@@ -41,8 +41,8 @@ const highlightSupport = {
     }
 
     const marker = highlightSupport.createMarkerNode(
-      `<span class="highlight-comment" data-word-id="${highlightId}"></span>`,
-      type || 'comment',
+      `<span class="highlight-${type}" data-word-id="${highlightId}"></span>`,
+      type,
       this.win
     )
     const fragment = range.extractContents()
