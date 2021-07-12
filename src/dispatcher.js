@@ -313,11 +313,11 @@ export default class Dispatcher {
     $document.on('selectionchange.editable', (event) => {
       const cursor = this.selectionWatcher.getFreshSelection()
 
-      if (cursor.isSelection && cursor.isAtBeginning() && cursor.isAtEnd()) {
+      if (cursor && cursor.isSelection && cursor.isAtBeginning() && cursor.isAtEnd()) {
         this.notify('selectToBoundary', cursor.host, event, 'both', cursor)
-      } else if (cursor.isSelection && cursor.isAtBeginning()) {
+      } else if (cursor && cursor.isSelection && cursor.isAtBeginning()) {
         this.notify('selectToBoundary', cursor.host, event, 'start', cursor)
-      } else if (cursor.isSelection && cursor.isAtEnd()) {
+      } else if (cursor && cursor.isSelection && cursor.isAtEnd()) {
         this.notify('selectToBoundary', cursor.host, event, 'end', cursor)
       }
 
