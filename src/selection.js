@@ -60,6 +60,12 @@ export default class Selection extends Cursor {
     return this.range.toString()
   }
 
+  // Return true if the selection can be wrapped, i.e. all open nodes
+  // are closed within this selection.
+  isWrappable () {
+    return content.isWrappable(this.range)
+  }
+
   // Get the ClientRects of this selection.
   // Use this if you want more precision than getBoundingClientRect can give.
   getRects () {
