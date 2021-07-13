@@ -303,18 +303,17 @@ export function removeFormattingElem (host, range, elem) {
   })
 }
 
-export function removeFormatting (host, range, tagName) {
+export function removeFormatting (host, range, selector) {
   return restoreRange(host, range, () => {
-    nuke(host, range, tagName)
+    nuke(host, range, selector)
   })
 }
 
 // Unwrap all tags this range is affected by.
 // Can also affect content outside of the range.
-export function nuke (host, range, tagName) {
+export function nuke (host, range, selector) {
   getTags(host, range).forEach((elem) => {
-    if (elem.nodeName.toUpperCase() !== 'BR' &&
-      (!tagName || elem.nodeName.toUpperCase() === tagName.toUpperCase())) {
+    if (elem.nodeName.toUpperCase() !== 'BR' && (!selector || elem.matches(selector))) {
       unwrap(elem)
     }
   })
