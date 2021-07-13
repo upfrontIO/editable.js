@@ -161,9 +161,14 @@ export function unwrapInternalNodes (sibling, keepUiElements) {
 
 // Get all tags that start or end inside the range
 export function getTags (host, range, filterFunc) {
-  const tags = getInnerTags(range, filterFunc)
+  const innerTags = getInnerTags(range, filterFunc)
+  const ancestorTags = getAncestorTags(host, range, filterFunc)
+  return innerTags.concat(ancestorTags)
+}
 
-  // get all tags that surround the range
+// Get all ancestor tags that start or end inside the range
+export function getAncestorTags (host, range, filterFunc) {
+  let tags = []
   let node = range.commonAncestorContainer
   while (node !== host) {
     if (!filterFunc || filterFunc(node)) tags.push(node)
