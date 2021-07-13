@@ -433,33 +433,38 @@ export default class Editable {
   }
 
   /**
-   * Subscribe a callback function to a custom event fired by the API.
+   * Subscribe a callback function to one or more custom events fired by
+   * the API. Events are separated by space in a single `events` string argument.
    *
-   * @param {String} event The name of the event.
+   * @param {String} events The names of the events.
    * @param {Function} handler The callback to execute in response to the
    *     event.
    *
    * @chainable
    */
-  on (event, handler) {
+  on (events, handler) {
     // TODO throw error if event is not one of EVENTS
     // TODO throw error if handler is not a function
-    this.dispatcher.on(event, handler)
+    events.split(' ').forEach(event => {
+      this.dispatcher.on(event, handler)
+    })
     return this
   }
 
   /**
-   * Unsubscribe a callback function from a custom event fired by the API.
-   * Opposite of {{#crossLink "Editable/on"}}{{/crossLink}}.
+   * Unsubscribe a callback function from one or more custom events fired
+   * by the API. Opposite of {{#crossLink "Editable/on"}}{{/crossLink}}.
    *
-   * @param {String} event The name of the event.
+   * @param {String} events The names of the events.
    * @param {Function} handler The callback to remove from the
    *     event or the special value false to remove all callbacks.
    *
    * @chainable
    */
-  off (...args) {
-    this.dispatcher.off.apply(this.dispatcher, args)
+  off (events, handler) {
+    events.split(' ').forEach(event => {
+      this.dispatcher.off(event, handler)
+    })
     return this
   }
 
